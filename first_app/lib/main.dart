@@ -81,31 +81,44 @@ class _RandomWordsState extends State<RandomWords> {
           if (index >= _suggestions.length) {
             _suggestions.addAll(generateWordPairs().take(10));
           }
-          return _buildRow(_suggestions[index]);
+          return _buildRow(_suggestions[index], index);
         });
   }
 
-  Widget _buildRow(WordPair pair) {
+  Widget _buildRow(WordPair pair, local) {
     final alreadySaved = _saved.contains(pair);
-    return ListTile(
-      title: Text(
-        pair.asPascalCase,
-        style: _biggerFont,
-      ),
-      trailing: Icon(
-        alreadySaved ? Icons.favorite : Icons.favorite_border,
-        color: alreadySaved ? Colors.red : null,
-      ),
-      onTap: () {
-        // NEW lines from here...
+    final item = _suggestions[local];
+
+    //Adicionar deletar
+    return Dismissible(
+      key: Key(item.asPascalCase),
+      onDismissed: (direction) {
         setState(() {
-          if (alreadySaved) {
+          _suggestions.removeAt(local);
+          if (_saved.contains(pair)) {
             _saved.remove(pair);
-          } else {
-            _saved.add(pair);
           }
         });
       },
+      child: ListTile(
+        title: Text(
+          pair.asPascalCase,
+          style: _biggerFont,
+        ),
+        trailing: Icon(
+          alreadySaved ? Icons.favorite : Icons.favorite_border,
+          color: alreadySaved ? Colors.red : null,
+        ),
+        onTap: () {
+          setState(() {
+            if (alreadySaved) {
+              _saved.remove(pair);
+            } else {
+              _saved.add(pair);
+            }
+          });
+        },
+      ),
     );
   }
 }

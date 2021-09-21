@@ -22,7 +22,6 @@ class RandomWords extends StatefulWidget {
 }
 
 class _RandomWordsState extends State<RandomWords> {
-  @override
   final _suggestions = <WordPair>[];
   final _biggerFont = const TextStyle(fontSize: 18);
   final _saved = <WordPair>{};
@@ -59,7 +58,6 @@ class _RandomWordsState extends State<RandomWords> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-      // Add from here...
       appBar: AppBar(
         title: Text('Startup Name Generator'),
         actions: [
@@ -107,7 +105,7 @@ class _RandomWordsState extends State<RandomWords> {
         ),
         trailing: IconButton(
           icon: Icon(Icons.favorite),
-          color: alreadySaved ? Colors.grey : Colors.red,
+          color: alreadySaved ? Colors.red : Colors.grey,
           onPressed: () {
             setState(() {
               if (alreadySaved) {

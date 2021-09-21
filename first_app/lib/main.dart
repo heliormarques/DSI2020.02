@@ -22,7 +22,7 @@ class RandomWords extends StatefulWidget {
 }
 
 class _RandomWordsState extends State<RandomWords> {
-  final _suggestions = <WordPair>[];
+  dynamic _suggestions = <WordPair>[];
   final _biggerFont = const TextStyle(fontSize: 18);
   final _saved = <WordPair>{};
 
@@ -85,7 +85,7 @@ class _RandomWordsState extends State<RandomWords> {
 
   Widget _buildRow(WordPair pair, local) {
     final alreadySaved = _saved.contains(pair);
-    final item = _suggestions[local];
+    dynamic item = _suggestions[local];
 
     //Adicionar deletar
     return Dismissible(
@@ -98,11 +98,30 @@ class _RandomWordsState extends State<RandomWords> {
           }
         });
       },
+      // Changes start here
       child: ListTile(
-        title: Text(
-          pair.asPascalCase,
-          style: _biggerFont,
-        ),
+        title: TextField(
+            decoration: InputDecoration(
+              hintText: pair.asPascalCase,
+              border: InputBorder.none,
+            ),
+            onSubmitted: (text) {
+              //
+              setState(() {
+                if (alreadySaved) {
+                  _saved.remove(item);
+                }
+              });
+
+              item = WordPair(text, " ");
+              _suggestions[local] = item;
+
+              setState(() {
+                if (alreadySaved) {
+                  _saved.add(item);
+                }
+              });
+            }),
         trailing: IconButton(
           icon: Icon(Icons.favorite),
           color: alreadySaved ? Colors.red : Colors.grey,

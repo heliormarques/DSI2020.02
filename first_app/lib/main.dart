@@ -63,7 +63,7 @@ class _RandomWordsState extends State<RandomWords> {
       appBar: AppBar(
         title: Text('Startup Name Generator'),
         actions: [
-          IconButton(icon: Icon(Icons.list), onPressed: _pushSaved),
+          IconButton(icon: Icon(Icons.favorite), onPressed: _pushSaved),
         ],
       ),
       body: _buildSuggestions(),
@@ -105,19 +105,19 @@ class _RandomWordsState extends State<RandomWords> {
           pair.asPascalCase,
           style: _biggerFont,
         ),
-        trailing: Icon(
-          alreadySaved ? Icons.favorite : Icons.favorite_border,
-          color: alreadySaved ? Colors.red : null,
+        trailing: IconButton(
+          icon: Icon(Icons.favorite),
+          color: alreadySaved ? Colors.grey : Colors.red,
+          onPressed: () {
+            setState(() {
+              if (alreadySaved) {
+                _saved.remove(pair);
+              } else {
+                _saved.add(pair);
+              }
+            });
+          },
         ),
-        onTap: () {
-          setState(() {
-            if (alreadySaved) {
-              _saved.remove(pair);
-            } else {
-              _saved.add(pair);
-            }
-          });
-        },
       ),
     );
   }
